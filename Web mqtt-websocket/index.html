@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/bootstrap4-toggle.css">
+<link rel="stylesheet" href="css/stylesheet.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
+<link rel="stylesheet" href="css/all.min.css">
+<link rel="stylesheet" href="css/propio.css">
+<script src="js/mqttws31.js" type="text/javascript"></script>
+<script src="js/jquery-3.3.1.slim.js"></script>
+<title>MQTT enciende ESP8266</title>
+</head>
+<body>
+<div class="content">
+	<div class="ml-5 mr-5">
+  <h1 class="text-center bg-success text-lg-center rounded-pill w-auto ">Botón control de ESP8266</h1>
+		</div>
+  <div class="row float-left w-30 p-5">
+    <div class="ml-5 p-5">
+      <input id="toggle-event" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger" data-style="ios" data-size="lg" data-on="<i class='far fa-lightbulb'></i>" data-off="<i class='fas fa-lightbulb'></i>">
+    </div>
+  </div>
+  <div class="row float-left w-30 p-5">
+    <div class="p-5">
+      <button id="boton_clic" type="button" class="btn btn-primary btn-lg fas fa-bolt rounded-circle" onclick="boton_2(1)"
+style = "width:60px;
+height:60px;"></button>
+    </div>
+  </div>
+  <div class="row float-left w-30 p-5">
+    <div class="p-5">
+      <button id="boton_focus" type="button" class="btn btn-primary btn-lg fas fa-camera rounded-circle" onclick="boton_3(1)" style = "width:60px;
+height:60px;"></button>
+    </div>
+  </div>
+</div>
+<script>
+// Controla el estado del boton y publica el mensaje
+$(function () {
+$('#toggle-event').change(function() {
+control = $(this).prop('checked')
+if(control == true)  (message = new Paho.MQTT.Message("1")) 
+if(control == false) (message = new Paho.MQTT.Message("0")) 
+message.destinationName = "/light/in";
+client.send(message)
+})
+})
+// Controla el estado del boton_2 y publica el mensaje
+function boton_2(state_2) {
+if(state_2 == 1) { message = new Paho.MQTT.Message("2"); }
+// if(state == 0) { message = new Paho.MQTT.Message("0"); }
+message.destinationName = "/light/in";
+client.send(message);
+}
+// Controla el estado del boton_3 y publica el mensaje
+function boton_3(state_3) {
+if(state_3 == 1) { message = new Paho.MQTT.Message("3"); }
+// if(state == 0) { message = new Paho.MQTT.Message("0"); }
+message.destinationName = "/light/in";
+client.send(message);
+}
+
+// Create a client instance
+// ############# ATTENTION: Enter Your MQTT TLS Port and host######## Supports only TLS Port
+client = new Paho.MQTT.Client("XXX.XXX.XXX.XXX", 9001,"web_" + parseInt(Math.random() * 100, 10));
+
+// set callback handlers
+client.onConnectionLost = onConnectionLost;
+client.onMessageArrived = onMessageArrived;
+
+//############# ATTENTION: Enter Your MQTT user and password details ########  
+var options = {
+useSSL: false,
+userName: "USER", // Enter Your MQTT user
+password: "PASSWORD", // Enter Your MQTT password 
+onSuccess:onConnect,
+onFailure:doFail
+}
+
+// connect the client
+client.connect(options);
+
+// called when the client connects
+function onConnect() {
+// Once a connection has been made, make a subscription and send a message.
+console.log("onConnect");
+client.subscribe("/light/in");
+message = new Paho.MQTT.Message("Hello CloudMQTT");
+message.destinationName = "/light/in";
+client.send(message);
+}
+
+
+function doFail(e){
+console.log(e);
+}
+
+// called when the client loses its connection
+function onConnectionLost(responseObject) {
+if (responseObject.errorCode !== 0) {
+console.log("onConnectionLost:"+responseObject.errorMessage);
+}
+}
+
+// called when a message arrives
+function onMessageArrived(message) {
+console.log("onMessageArrived:"+message.payloadString);
+}
+</script> 
+<!--Bloque de llamada a los archivos JS--> 
+<script src="js/bootstrap.min.js"></script> 
+<script src="js/script.js"></script> 
+<script src="js/bootstrap4-toggle.js"></script>
+</body>
+</html>
