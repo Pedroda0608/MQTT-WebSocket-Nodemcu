@@ -6,3 +6,5 @@ En <a href="https://github.com/Pedroda0608/MQTT-WebSocket-Nodemcu/tree/master/We
 Antes de ejecutar, debes modificar los datos de tu servidor MQTT, usuario y contraseña.
 
 En <a href="https://github.com/Pedroda0608/MQTT-WebSocket-Nodemcu/tree/master/NodeMCU_MQTT-WebSocket">NodeMCU_MQTT-WebSocket</a> encontraras el fichero "ino" para cargar en tu placa NodeMCU mediante el IDE de Arduino, antes debes modificar todos los datos referentes a la conexion WiFi y MQTT.
+
+El fichero <a href="https://github.com/Pedroda0608/MQTT-WebSocket-Nodemcu/blob/master/mqtt_esp8266_9001_LED.fzz">mqtt_esp8266_9001_LED.fzz</a> describe el esquema de conexiones para el proyecto.
